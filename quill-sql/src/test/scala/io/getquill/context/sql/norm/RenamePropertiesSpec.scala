@@ -128,6 +128,54 @@ class RenamePropertiesSpec extends Spec {
           "SELECT t.field_s FROM test_entity t ORDER BY t.l ASC NULLS FIRST"
       }
     }
+    "take" - {
+      "body" in {
+        val q = quote {
+          e.take(1)
+        }
+        testContext.run(q).sql mustEqual
+          "SELECT t.field_s, t.field_i, t.l, t.o FROM test_entity t LIMIT 1"
+      }
+      "transitive" in {
+        val q = quote {
+          e.take(1).map(t => t.s)
+        }
+        testContext.run(q).sql mustEqual
+          "SELECT t.field_s FROM test_entity t LIMIT 1"
+      }
+    }
+    "drop" - {
+      "body" in {
+        val q = quote {
+          e.drop(1)
+        }
+        testContext.run(q).sql mustEqual
+          "SELECT t.field_s, t.field_i, t.l, t.o FROM test_entity t OFFSET 1"
+      }
+      "transitive" in {
+        val q = quote {
+          e.drop(1).map(t => t.s)
+        }
+        testContext.run(q).sql mustEqual
+          "SELECT t.field_s FROM test_entity t OFFSET 1"
+      }
+    }
+    "distinct" - {
+      "body" in {
+        val q = quote {
+          e.distinct
+        }
+        testContext.run(q).sql mustEqual
+          "SELECT DISTINCT x.* FROM test_entity x"
+      }
+      "transitive" in {
+        val q = quote {
+          e.distinct.map(t => t.s)
+        }
+        testContext.run(q).sql mustEqual
+          "SELECT t.s FROM (SELECT DISTINCT x.s FROM test_entity x) t"
+      }
+    }
     "join" - {
       "both sides" in {
         val q = quote {
