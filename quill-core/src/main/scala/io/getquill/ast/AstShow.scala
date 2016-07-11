@@ -162,6 +162,7 @@ object AstShow {
     case Update(query)                       => s"${query.show}.update"
     case Insert(query)                       => s"${query.show}.insert"
     case Delete(query)                       => s"${query.show}.delete"
+    case Returning(query, property)          => s"${query.show}.returning(_.$property)"
   }
 
   implicit val assignmentShow: Show[Assignment] = Show[Assignment] {

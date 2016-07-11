@@ -61,7 +61,7 @@ lazy val `quill-jdbc` =
     .settings(commonSettings: _*)
     .settings(mimaSettings: _*)
     .settings(
-      fork in Test := true,
+      fork in Test := false,
       libraryDependencies ++= Seq(
         "com.zaxxer"     % "HikariCP"             % "2.4.6",
         "mysql"          % "mysql-connector-java" % "5.1.38"   % "test",

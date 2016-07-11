@@ -152,6 +152,9 @@ trait StatefulTransformer[T] {
       case Delete(a) =>
         val (at, att) = apply(a)
         (Delete(at), att)
+      case Returning(a, b) =>
+        val (at, att) = apply(a)
+        (Returning(at, b), att)
     }
 
   def apply(e: Assignment): (Assignment, StatefulTransformer[T]) =

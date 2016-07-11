@@ -469,6 +469,22 @@ class AstShowSpec extends Spec {
         (q.ast: Ast).show mustEqual
           """(x1) => query[TestEntity].insert"""
       }
+
+      "returning assigned" in {
+        val q = quote {
+          query[TestEntity].insert(t => t.s -> "a").returning(_.l)
+        }
+        (q.ast: Ast).show mustEqual
+          """query[TestEntity].insert(t => t.s -> "a").returning(_.l)"""
+      }
+
+      "returning unassigned" in {
+        val q = quote {
+          query[TestEntity].insert.returning(_.l)
+        }
+        (q.ast: Ast).show mustEqual
+          """(x1) => query[TestEntity].insert.returning(_.l)"""
+      }
     }
 
     "delete" in {
