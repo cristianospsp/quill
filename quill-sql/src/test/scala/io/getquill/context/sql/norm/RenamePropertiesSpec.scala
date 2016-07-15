@@ -134,7 +134,7 @@ class RenamePropertiesSpec extends Spec {
           e.take(1)
         }
         testContext.run(q).sql mustEqual
-          "SELECT t.field_s, t.field_i, t.l, t.o FROM test_entity t LIMIT 1"
+          "SELECT x.field_s, x.field_i, x.l, x.o FROM test_entity x LIMIT 1"
       }
       "transitive" in {
         val q = quote {
@@ -150,7 +150,7 @@ class RenamePropertiesSpec extends Spec {
           e.drop(1)
         }
         testContext.run(q).sql mustEqual
-          "SELECT t.field_s, t.field_i, t.l, t.o FROM test_entity t OFFSET 1"
+          "SELECT x.field_s, x.field_i, x.l, x.o FROM test_entity x OFFSET 1"
       }
       "transitive" in {
         val q = quote {
@@ -173,7 +173,7 @@ class RenamePropertiesSpec extends Spec {
           e.distinct.map(t => t.s)
         }
         testContext.run(q).sql mustEqual
-          "SELECT t.s FROM (SELECT DISTINCT x.s FROM test_entity x) t"
+          "SELECT t.field_s FROM (SELECT DISTINCT x.field_s FROM test_entity x) t"
       }
     }
     "join" - {
